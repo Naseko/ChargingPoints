@@ -1,0 +1,32 @@
+version: "3.8"
+services:
+  cpa:
+    build:
+      context: .
+      dockerfile: Dockerfile_local
+    hostname: cpa
+    container_name: cpa
+    networks:
+      - net
+    ports:
+      - 11487:8081
+    depends_on:
+      - postgres
+
+  postgres:
+    image: postgres:14.1-alpine
+    container_name: postgres
+    hostname: postgres
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_USER: "cpadmin"
+      POSTGRES_PASSWORD: "Y3BhZG1pbg=="
+    ports:
+      - 54321:5432
+    networks:
+      - net
+
+networks:
+  net:
+    name: net
+    driver: bridge
