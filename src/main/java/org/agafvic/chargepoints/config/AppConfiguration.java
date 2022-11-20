@@ -18,6 +18,9 @@ public class AppConfiguration {
     @Value(INFO_VER_DB)
     private String dbVersion;
 
+    public AppConfiguration() {
+    }
+
     @Bean @Scope("singleton")
     public VersionInfo versionInfo() {
         return new VersionInfo(appVersion,dbVersion);
