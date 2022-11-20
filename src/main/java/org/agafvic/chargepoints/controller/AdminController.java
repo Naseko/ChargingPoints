@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.agafvic.chargepoints.dto.*;
 import org.agafvic.chargepoints.repository.*;
 import org.agafvic.chargepoints.service.AdminServiceImpl;
+import org.agafvic.chargepoints.service.PatternServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ import java.util.List;
 public class AdminController {
 	@Autowired
 	private AdminServiceImpl adminServiceImpl;
+
+	@Autowired
+	PatternServiceImpl patternServiceImpl;
 
 	@PostMapping("/api/v1/admin/connector")
 	public ConnectorDto createConnector(@Validated @RequestBody ConnectorPointBindingDto binding)
@@ -53,5 +57,10 @@ public class AdminController {
 	public List<SessionDto> createRfid(@Validated @RequestBody TimeRangeDto dto)
 			throws EntityNotFoundException {
 		return adminServiceImpl.findAllSessionsInRange(dto);
+	}
+
+	@GetMapping("/api/v1/admin/patterns")
+	public List<PatternEntity> getPatterns() {
+		return patternServiceImpl.getPatterns();
 	}
 }
