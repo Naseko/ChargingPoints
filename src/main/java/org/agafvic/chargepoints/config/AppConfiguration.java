@@ -11,7 +11,6 @@ import static org.agafvic.chargepoints.config.Constants.INFO_VER_DB;
 
 @Configuration
 public class AppConfiguration {
-
     @Value(INFO_VER_APP)
     private String appVersion;
 
@@ -25,12 +24,4 @@ public class AppConfiguration {
     public VersionInfo versionInfo() {
         return new VersionInfo(appVersion,dbVersion);
     }
-
-//    @Bean
-//    public SpringLiquibase migrations(DataSource dataSource) {
-//        final var migrations = new SpringLiquibase();
-//        migrations.setChangeLog("classpath:migrations/changelog.xml");
-//        migrations.setDataSource(dataSource);
-//        return migrations;
-//    }
 }

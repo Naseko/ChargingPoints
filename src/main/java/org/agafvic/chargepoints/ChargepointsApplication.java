@@ -11,3 +11,4 @@ public class ChargepointsApplication {
 		SpringApplication.run(ChargepointsApplication.class, args);
 	}
 }
+
