@@ -22,6 +22,7 @@ public interface SessionMapper {
                     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     })
     ChargingSessionEntity mapTo(SessionDto dto);
+
     @InheritInverseConfiguration
     SessionDto mapTo(ChargingSessionEntity entity);
 

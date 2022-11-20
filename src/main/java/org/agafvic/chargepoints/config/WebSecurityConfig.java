@@ -24,10 +24,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/version").permitAll()
+                .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/api/v1/admin/**").hasAnyRole(Role.ADMIN)
                 .antMatchers("/api/v1/customer/**").hasAnyRole(Role.CUSTOMER)
                 .and()
-                .httpBasic();
+                .httpBasic().and()
+                .headers().frameOptions().disable();
     }
 }

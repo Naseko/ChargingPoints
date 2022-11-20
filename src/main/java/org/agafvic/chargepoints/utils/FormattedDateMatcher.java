@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Pattern;
 
 @Service
-public class FormattedDateMatcherB implements DateMatcherB{
+public class FormattedDateMatcher implements DateMatcher {
     @Override
     public boolean matches(String mask, String date) {
         Pattern pattern = Pattern.compile(mask);

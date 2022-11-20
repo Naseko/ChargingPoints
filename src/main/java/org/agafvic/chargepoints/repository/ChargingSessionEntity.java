@@ -10,28 +10,25 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity @Table(name= "charging_session")
+@Entity
+@Table(name = "charging_session")
 public class ChargingSessionEntity {
+    @Column(name = "number")
+    String number;
+    @Column(name = "meter")
+    double meter;
+    @Column(name = "start_time")
+    Instant startTime;
+    @Column(name = "stop_time")
+    Instant stopTime;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-
-    @Column(name = "number")
-    String number;
-
-    @Column(name = "meter")
-    double meter;
-
-    @Column(name = "start_time")
-    Instant startTime;
-
-    @Column(name = "stop_time")
-    Instant stopTime;
-
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
@@ -39,6 +36,10 @@ public class ChargingSessionEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
     private VehicleEntity vehicle;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "error_id", referencedColumnName = "number")
+    private ErrorEntity error;
 
     @Override
     public boolean equals(Object o) {

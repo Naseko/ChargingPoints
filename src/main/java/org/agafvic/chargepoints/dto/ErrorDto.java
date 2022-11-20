@@ -2,10 +2,8 @@ package org.agafvic.chargepoints.dto;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotNull;
-
 @Data
-public class SessionStoperDto {
-    @NotNull
+public class ErrorDto {
+    private String msg;
     private String number;
 }

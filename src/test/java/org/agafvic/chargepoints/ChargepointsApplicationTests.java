@@ -9,5 +9,4 @@ class ChargepointsApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

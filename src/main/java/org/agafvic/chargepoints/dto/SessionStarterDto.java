@@ -7,10 +7,9 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class SessionStarterDto {
-
     @NotNull
     private String rfidNumber;
-
-    @NotNull @UUID
+    @NotNull
+    @UUID
     private String chargingPointUSN;
 }

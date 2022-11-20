@@ -12,11 +12,13 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Getter @Setter
+@Getter
+@Setter
 public class PatternServiceImpl implements PatternService {
-    @Autowired private PatternRepository patternRepository;
+    @Autowired
+    private PatternRepository patternRepository;
 
-    public List<PatternEntity> getPatterns(){
+    public List<PatternEntity> getPatterns() {
         return patternRepository.selectAll();
 
     }

@@ -1,15 +1,20 @@
 package org.agafvic.chargepoints.repository;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity @Table(name= "Vehicles")
+@Entity
+@Table(name = "Vehicles")
 public class VehicleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -17,7 +22,6 @@ public class VehicleEntity {
     private Long id;
     @Column(name = "reg_plate", nullable = false, unique = true)
     private String regPlate;
-
     private String name;
 
     @OneToOne(mappedBy = "vehicle")

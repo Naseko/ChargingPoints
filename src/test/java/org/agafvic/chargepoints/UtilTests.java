@@ -5,10 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class UtilTests {
-
-
     @Test
-    void testCalcOne() {
+    void testMeterGeneration() {
         MeterUtils utils = new MeterUtils();
         Assertions.assertNotNull(utils.mockMeterValue());
     }

@@ -5,25 +5,35 @@ import org.agafvic.chargepoints.dto.*;
 import org.agafvic.chargepoints.exceptions.EntityDoesNotExistException;
 import org.agafvic.chargepoints.mapper.*;
 import org.agafvic.chargepoints.repository.*;
+import org.agafvic.chargepoints.utils.ConnectorUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
 @Slf4j
 @Service
 public class AdminServiceImpl implements AdminService {
-    @Autowired private ChargingPointRepository chargingPointRepository;
-    @Autowired private ConnectorRepository connectorRepository;
-    @Autowired private CustomerRepository customerRepository;
-    @Autowired private VehicleRepository vehicleRepository;
+    @Autowired
+    private ChargingPointRepository chargingPointRepository;
+    @Autowired
+    private ConnectorRepository connectorRepository;
+    @Autowired
+    private CustomerRepository customerRepository;
+    @Autowired
+    private VehicleRepository vehicleRepository;
+    @Autowired
+    private RfidRepository rfidRepository;
+    @Autowired
+    private ChargingSessionRepository sessionRepository;
+    @Autowired
+    private ErrorRepository errorRepository;
+    @Autowired
+    private ConnectorUtils connectorUtils;
 
-    @Autowired private RfidRepository rfidRepository;
-
-    @Autowired private ChargingSessionRepository sessionRepository;
-
-    //TODO refactor
     private ConnectorEntity getConnectorEntity(ConnectorPointBindingDto binding)
             throws EntityDoesNotExistException {
 
@@ -33,26 +43,23 @@ public class AdminServiceImpl implements AdminService {
                         .orElseThrow(() -> new EntityDoesNotExistException(
                                 ChargingPointEntity.class, "usn", chargingPointUsn));
 
-        ConnectorEntity connectorEntity = new ConnectorEntity();
-        connectorEntity.setChargingPoint(chargingPointEntity);
-        connectorEntity.setNumber(binding.getConnectorUsn());
-
-        return connectorEntity;
+        return connectorUtils.createConnectorEntity(binding, chargingPointEntity);
     }
 
     private RfidEntity getRfid(RfidBindingDto binding) throws EntityDoesNotExistException {
         String customerNumber = binding.getCustomerNumber();
-        CustomerEntity customer =
-                customerRepository.findByNumber(customerNumber).orElseThrow(() -> new EntityDoesNotExistException(
-                        CustomerEntity.class, "id", customerNumber));
+        CustomerEntity customer = customerRepository.findByNumber(customerNumber).orElseThrow(() ->
+                new EntityDoesNotExistException(CustomerEntity.class, "id", customerNumber));
 
         String regPlate = binding.getVehicleRegPlate();
+        VehicleEntity vehicle = vehicleRepository.findByRegPlate(regPlate).orElseThrow(() ->
+                new EntityDoesNotExistException(VehicleEntity.class, "id", regPlate));
 
-        VehicleEntity vehicle =
-                vehicleRepository.findByRegPlate(regPlate).orElseThrow(() -> new EntityDoesNotExistException(
-                        VehicleEntity.class, "id", regPlate));
+        return getRfidEntity(binding, customer, vehicle);
+    }
 
-        //TODO заменить на маппер
+    @NotNull
+    private static RfidEntity getRfidEntity(RfidBindingDto binding, CustomerEntity customer, VehicleEntity vehicle) {
         RfidEntity rfidEntity = new RfidEntity();
         rfidEntity.setName(binding.getName());
         rfidEntity.setNumber(binding.getNumber());
@@ -63,48 +70,65 @@ public class AdminServiceImpl implements AdminService {
 
     public ConnectorDto createConnector(ConnectorPointBindingDto binding) {
         ConnectorEntity connectorEntity = this.getConnectorEntity(binding);
-        ConnectorEntity ce = connectorRepository.save(connectorEntity);
-        return ConnectorMapper.INSTANCE.mapTo(ce);
+        connectorEntity = connectorRepository.save(connectorEntity);
+        return ConnectorMapper.INSTANCE.mapTo(connectorEntity);
     }
 
-    public ChargingPointDto createPoint(ChargingPointDto chargingPointDto){
-        if(null == chargingPointDto.getUsn() || chargingPointDto.getUsn().isBlank()){
+    public ChargingPointDto createPoint(ChargingPointDto chargingPointDto) {
+        if (null == chargingPointDto.getUsn() || chargingPointDto.getUsn().isBlank()) {
             chargingPointDto.setUsn(UUID.randomUUID().toString());
         }
-        ChargingPointEntity chargingPointEntity = ChargingPointMapper.INSTANCE.mapTo(chargingPointDto);
         CustomerEntity customer =
                 customerRepository.findByNumber(chargingPointDto.getCustomerNumber()).orElseThrow(() ->
                         new EntityDoesNotExistException(
                                 CustomerEntity.class, "id", chargingPointDto.getCustomerNumber()));
+        ChargingPointEntity chargingPointEntity = ChargingPointMapper.INSTANCE.mapTo(chargingPointDto);
         chargingPointEntity.setCustomer(customer);
-        ChargingPointEntity cpe = chargingPointRepository.save(chargingPointEntity);
-        return ChargingPointMapper.INSTANCE.mapTo(cpe);
+        chargingPointEntity = chargingPointRepository.save(chargingPointEntity);
+        return ChargingPointMapper.INSTANCE.mapTo(chargingPointEntity);
     }
 
-    public CustomerDto createCustomer(CustomerDto customerDto){
-        if(null == customerDto.getNumber() || customerDto.getNumber().isBlank()){
+    public CustomerDto createCustomer(CustomerDto customerDto) {
+        if (null == customerDto.getNumber() || customerDto.getNumber().isBlank()) {
             customerDto.setNumber(UUID.randomUUID().toString());
         }
         CustomerEntity customerEntity = CustomerMapper.INSTANCE.mapTo(customerDto);
-        CustomerEntity savedCustomer = customerRepository.save(customerEntity);
-        return CustomerMapper.INSTANCE.mapTo(savedCustomer);
+        customerEntity = customerRepository.save(customerEntity);
+        return CustomerMapper.INSTANCE.mapTo(customerEntity);
     }
 
     public VehicleDto createVehicle(VehicleDto vehicleDto) {
         VehicleEntity vehicle = VehicleMapper.INSTANCE.mapTo(vehicleDto);
-        VehicleEntity savedVehicle = vehicleRepository.save(vehicle);
-        return VehicleMapper.INSTANCE.mapTo(savedVehicle);
+        vehicle = vehicleRepository.save(vehicle);
+        return VehicleMapper.INSTANCE.mapTo(vehicle);
     }
 
     public RfidDto createRfid(RfidBindingDto binding) {
         RfidEntity rfidEntity = this.getRfid(binding);
-        RfidEntity savedRfid = rfidRepository.save(rfidEntity);
-        return RfidMapper.INSTANCE.mapTo(savedRfid);
+        rfidEntity = rfidRepository.save(rfidEntity);
+        return RfidMapper.INSTANCE.mapTo(rfidEntity);
     }
 
     public List<SessionDto> findAllSessionsInRange(TimeRangeDto dto) {
         List<ChargingSessionEntity> sessionEntities =
-                sessionRepository.findAllInRange(dto.getFrom(),dto.getTo());
+                sessionRepository.findAllInRange(dto.getFrom(), dto.getTo());
         return SessionMapper.INSTANCE.mapTo(sessionEntities);
+    }
+
+    public SessionDto mockError(ErrorDto errorDto) {
+        String number = errorDto.getNumber();
+        ChargingSessionEntity session =
+                sessionRepository.findByNumber(number)
+                        .orElseThrow(() -> new EntityDoesNotExistException(
+                                ChargingSessionEntity.class, "number", number));
+        if (null != session.getStopTime()) {
+            throw new EntityDoesNotExistException(ChargingSessionEntity.class, "number", number);
+        } else {
+            ErrorEntity errorEntity = ErrorMapper.INSTANCE.mapTo(errorDto);
+            errorRepository.save(errorEntity);
+            session.setStopTime(Instant.now());
+            session = sessionRepository.save(session);
+            return SessionMapper.INSTANCE.mapTo(session);
+        }
     }
 }

@@ -17,10 +17,10 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity @Table(name= "Charging_Points")
+@Entity
+@Table(name = "Charging_Points")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ChargingPointEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", nullable = false)
@@ -29,7 +29,7 @@ public class ChargingPointEntity {
     @Column(name = "usn", nullable = false, unique = true)
     private String usn;
 
-    @Column(name = "name")
+    @Column(name = "title")
     private String name;
 
     @OneToMany(mappedBy = "chargingPoint", cascade = CascadeType.ALL, orphanRemoval = true)

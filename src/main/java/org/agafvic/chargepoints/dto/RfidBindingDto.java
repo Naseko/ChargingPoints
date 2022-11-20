@@ -11,8 +11,8 @@ public class RfidBindingDto {
     private String customerNumber;
     @NotNull
     private String vehicleRegPlate;
-    @NotNull
     private String name;
-    @NotNull @UUID //TODO сделать генерящимся
+    @NotNull
+    @UUID
     private String number;
 }

@@ -12,17 +12,15 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "Patterns")
-public class PatternEntity {
-
+@Table(name = "Errors")
+public class ErrorEntity {
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
-
-    @Column(name = "pattern", nullable = false, unique = true)
-    private String pattern;
-
-    @Column(name = "format", nullable = false)
-    private String format;
+    @Column(name = "id", nullable = false)
+    private Long id;
+    private String msg;
+    @Column(name = "number", nullable = false, unique = true)
+    private String number;
+    @OneToOne(mappedBy = "vehicle")
+    private ChargingSessionEntity session;
 }

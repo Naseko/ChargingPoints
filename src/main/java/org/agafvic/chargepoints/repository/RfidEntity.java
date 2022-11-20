@@ -10,10 +10,12 @@ import org.hibernate.Hibernate;
 import javax.persistence.*;
 import java.util.Objects;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity @Table(name= "Rfids")
+@Entity
+@Table(name = "Rfids")
 public class RfidEntity {
     @Id
     @Column(name = "id", nullable = false)
@@ -23,10 +25,10 @@ public class RfidEntity {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "rname", nullable = false)
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonBackReference
     private CustomerEntity customer;
 

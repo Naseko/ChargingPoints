@@ -1,7 +1,7 @@
 package org.agafvic.chargepoints;
 
 import org.agafvic.chargepoints.service.DateConverterServiceImpl;
-import org.agafvic.chargepoints.utils.FormattedDateMatcherB;
+import org.agafvic.chargepoints.utils.FormattedDateMatcher;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -24,7 +24,7 @@ import java.time.OffsetDateTime;
 public class DateConverterServiceImplTests {
     @Autowired DateConverterServiceImpl converter;
     @Autowired
-    FormattedDateMatcherB b;
+    FormattedDateMatcher b;
     @Test
     void testDateIsConverted() {
         OffsetDateTime date = converter.convert("2022-12-03");

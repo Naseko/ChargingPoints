@@ -8,8 +8,10 @@ import javax.validation.constraints.NotNull;
 @Data
 public class ConnectorPointBindingDto {
 
-    @NotNull @UUID
+    @NotNull
+    @UUID
     private String chargingPointUsn;
-    @NotNull @UUID
+    @NotNull
+    @UUID
     private String connectorUsn;
 }

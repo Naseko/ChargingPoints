@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "org.agafvic.chargepoints.repository")
 public class ChargepointsApplication {
-	public static void main(String[] args) {
-		SpringApplication.run(ChargepointsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ChargepointsApplication.class, args);
+    }
 }
 

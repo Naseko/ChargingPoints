@@ -12,10 +12,12 @@ import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity @Table(name= "Customers")
+@Entity
+@Table(name = "Customers")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CustomerEntity {
     @Id

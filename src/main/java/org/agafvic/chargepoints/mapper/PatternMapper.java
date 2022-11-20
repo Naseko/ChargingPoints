@@ -16,6 +16,7 @@ public interface PatternMapper {
                     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
     })
     PatternEntity mapTo(PatternDto customerDto);
+
     @InheritInverseConfiguration
     PatternDto mapTo(PatternEntity customerEntity);
 }

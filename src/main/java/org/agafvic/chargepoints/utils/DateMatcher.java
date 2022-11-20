@@ -1,5 +1,5 @@
 package org.agafvic.chargepoints.utils;
 
-public interface DateMatcherB {
+public interface DateMatcher {
     boolean matches(String pattern, String date);
 }

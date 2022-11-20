@@ -7,6 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class ConnectorDto {
-    @NotNull @UUID
+    @NotNull
+    @UUID
     private String number;
 }

@@ -1,9 +1,10 @@
 package org.agafvic.chargepoints.repository;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -13,7 +14,8 @@ import java.util.Objects;
 @Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
-@Entity @Table(name= "Connectors")
+@Entity
+@Table(name = "Connectors")
 public class ConnectorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)

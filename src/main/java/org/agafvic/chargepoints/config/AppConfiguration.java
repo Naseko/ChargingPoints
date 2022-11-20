@@ -1,6 +1,6 @@
 package org.agafvic.chargepoints.config;
 
-import org.agafvic.chargepoints.model.VersionInfo;
+import org.agafvic.chargepoints.dto.VersionInfoDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,9 @@ public class AppConfiguration {
     public AppConfiguration() {
     }
 
-    @Bean @Scope("singleton")
-    public VersionInfo versionInfo() {
-        return new VersionInfo(appVersion,dbVersion);
+    @Bean
+    @Scope("singleton")
+    public VersionInfoDto versionInfo() {
+        return new VersionInfoDto(appVersion, dbVersion);
     }
 }

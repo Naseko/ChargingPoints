@@ -19,6 +19,7 @@ public interface ChargingPointMapper {
 
     })
     ChargingPointEntity mapTo(ChargingPointDto chargingPointDto);
+
     @InheritInverseConfiguration
     ChargingPointDto mapTo(ChargingPointEntity chargingPointEntity);
 }
