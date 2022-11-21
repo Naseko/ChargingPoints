@@ -25,7 +25,7 @@ public class RfidEntity {
     @Column(name = "number", nullable = false, unique = true)
     private String number;
 
-    @Column(name = "rname", nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

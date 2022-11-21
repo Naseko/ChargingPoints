@@ -54,6 +54,11 @@ public class DateConverterServiceImplTests {
         OffsetDateTime date = converter.convert("2022/12/03T00:00+03:00");
         Assertions.assertEquals("2022-12-03T00:00+03:00",date.toString());
     }
+    @Test
+    void testDateFullString2() {
+        OffsetDateTime date = converter.convert("2022/12/03T00:00+03:00");
+        Assertions.assertEquals("2022-12-03T00:00+03:00",date.toString());
+    }
 
     @Test
     void testMatcher(){

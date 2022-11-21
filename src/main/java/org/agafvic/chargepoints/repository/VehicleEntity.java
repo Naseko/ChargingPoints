@@ -1,5 +1,6 @@
 package org.agafvic.chargepoints.repository;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -24,10 +26,12 @@ public class VehicleEntity {
     private String regPlate;
     private String name;
 
-    @OneToOne(mappedBy = "vehicle")
-    private ChargingSessionEntity session;
+//    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<ChargingSessionEntity> sessions;
 
-    @OneToOne(mappedBy = "vehicle")
+    @OneToOne(mappedBy = "vehicle", cascade = CascadeType.ALL, orphanRemoval = true)
     private RfidEntity rfid;
 
     @Override

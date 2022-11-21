@@ -17,6 +17,7 @@ public class SessionUtils {
         session.setStartTime(Instant.now());
         session.setVehicle(rfid.getVehicle());
         session.setNumber(UUID.randomUUID().toString());
+        session.setCustomer(rfid.getCustomer());
         return session;
     }
 }

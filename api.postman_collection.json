@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "ec616643-5d5e-4cc2-b635-f616f34f7e9e",
+		"name": "api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "getReceiptStatusById",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "gkp0suat",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "gkp0#su&aT",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Application",
+						"value": "ww",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Actions",
+						"value": "sales",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "SapID",
+						"value": "ssda",
+						"type": "text"
+					},
+					{
+						"key": "created",
+						"value": "2022-02-25T02:45:04.353+03:00",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/v1/receipt/b1",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"receipt",
+						"b1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getZReportBySapId",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "created",
+						"value": "2022-02-25T02:45:04.353+03:00",
+						"type": "text"
+					},
+					{
+						"key": "SapID",
+						"value": "ssda",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:8080/api/v1/report",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"report"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addReceipt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Application",
+						"value": "ww",
+						"type": "text"
+					},
+					{
+						"key": "Actions",
+						"value": "sales",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{wew: 1}"
+				},
+				"url": {
+					"raw": "localhost:8080/api/v1.0/receipt",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1.0",
+						"receipt"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Greeting",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NjQwMTYzMywiaWF0IjoxNjQ2MzgzNjMzfQ.VZrri6kdESvv1agWlM6YdPXzU-Y_gSwY7SMGTxxTAZEYCkmKujRHcrIqCbqUzzXxIpaI1ckO8wva6Gvxw5V9EQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/greeting",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"greeting"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Auth",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY0NjQwMTYzMywiaWF0IjoxNjQ2MzgzNjMzfQ.VZrri6kdESvv1agWlM6YdPXzU-Y_gSwY7SMGTxxTAZEYCkmKujRHcrIqCbqUzzXxIpaI1ckO8wva6Gvxw5V9EQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\":\"admin\",\n    \"password\":\"password\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/authenticate",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

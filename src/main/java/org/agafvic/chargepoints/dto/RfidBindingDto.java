@@ -7,12 +7,13 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class RfidBindingDto {
-    @NotNull
+    @NotNull @UUID
     private String customerNumber;
     @NotNull
     private String vehicleRegPlate;
-    private String name;
-    @NotNull
-    @UUID
+    @NotNull @UUID
     private String number;
+    @NotNull @UUID
+    private String chargingPointUsn;
+    private String name;
 }

@@ -248,13 +248,13 @@
 					"response": []
 				},
 				{
-					"name": "5. Add RFID Copy",
+					"name": "Mock error",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"RFID one for user one\",\n  \"vehicleId\": 4,\n  \"customerId\": 3,\n  \"name\": \"2342\",\n  \"number\": \"ew\"\n}",
+							"raw": "{\n  \"rfidNumber\": \"ABC123DE45\",\n  \"chargingPointUSN\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -262,7 +262,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost:8081/api/v1/admin/rfid",
+							"raw": "http://localhost:8081/api/v1/customer/session/start",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,8 +271,9 @@
 							"path": [
 								"api",
 								"v1",
-								"admin",
-								"rfid"
+								"customer",
+								"session",
+								"start"
 							]
 						}
 					},

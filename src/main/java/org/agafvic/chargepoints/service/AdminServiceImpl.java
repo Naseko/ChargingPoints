@@ -6,6 +6,7 @@ import org.agafvic.chargepoints.exceptions.EntityDoesNotExistException;
 import org.agafvic.chargepoints.mapper.*;
 import org.agafvic.chargepoints.repository.*;
 import org.agafvic.chargepoints.utils.ConnectorUtils;
+import org.apache.commons.collections4.IterableUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -50,12 +51,15 @@ public class AdminServiceImpl implements AdminService {
         String customerNumber = binding.getCustomerNumber();
         CustomerEntity customer = customerRepository.findByNumber(customerNumber).orElseThrow(() ->
                 new EntityDoesNotExistException(CustomerEntity.class, "id", customerNumber));
+        if(chargingPointRepository.existsByUsn(binding.getChargingPointUsn(), customerNumber)){
+            String regPlate = binding.getVehicleRegPlate();
+            VehicleEntity vehicle = vehicleRepository.findByRegPlate(regPlate).orElseThrow(() ->
+                    new EntityDoesNotExistException(VehicleEntity.class, "id", regPlate));
 
-        String regPlate = binding.getVehicleRegPlate();
-        VehicleEntity vehicle = vehicleRepository.findByRegPlate(regPlate).orElseThrow(() ->
-                new EntityDoesNotExistException(VehicleEntity.class, "id", regPlate));
-
-        return getRfidEntity(binding, customer, vehicle);
+            return getRfidEntity(binding, customer, vehicle);
+        }else{
+            throw new EntityDoesNotExistException(CustomerEntity.class, "id", customerNumber);
+        }
     }
 
     @NotNull
@@ -110,8 +114,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public List<SessionDto> findAllSessionsInRange(TimeRangeDto dto) {
-        List<ChargingSessionEntity> sessionEntities =
-                sessionRepository.findAllInRange(dto.getFrom(), dto.getTo());
+//        List<ChargingSessionEntity> sessionEntities = IterableUtils.toList(sessionRepository.findAll());
+        List<ChargingSessionEntity> sessionEntities = sessionRepository.findAllInRange(dto.getFrom(), dto.getTo());
         return SessionMapper.INSTANCE.mapTo(sessionEntities);
     }
 
@@ -122,12 +126,14 @@ public class AdminServiceImpl implements AdminService {
                         .orElseThrow(() -> new EntityDoesNotExistException(
                                 ChargingSessionEntity.class, "number", number));
         if (null != session.getStopTime()) {
+            System.out.println("Stop time is: " + session.getStopTime());
             throw new EntityDoesNotExistException(ChargingSessionEntity.class, "number", number);
         } else {
             ErrorEntity errorEntity = ErrorMapper.INSTANCE.mapTo(errorDto);
-            errorRepository.save(errorEntity);
             session.setStopTime(Instant.now());
-            session = sessionRepository.save(session);
+            session.setError(errorEntity);
+            errorEntity.setSession(session);
+            errorRepository.save(errorEntity);
             return SessionMapper.INSTANCE.mapTo(session);
         }
     }

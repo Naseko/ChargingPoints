@@ -1,5 +1,6 @@
 package org.agafvic.chargepoints.repository;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,16 +30,20 @@ public class ChargingSessionEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    //todo
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private CustomerEntity customer;
-
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    //todo
+//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+//    @JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private VehicleEntity vehicle;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "error_id", referencedColumnName = "number")
+    @OneToOne(mappedBy = "session", cascade = CascadeType.ALL, orphanRemoval = true)
     private ErrorEntity error;
 
     @Override
@@ -64,3 +69,5 @@ public class ChargingSessionEntity {
                 "stopTime = " + stopTime + ")";
     }
 }
+
+

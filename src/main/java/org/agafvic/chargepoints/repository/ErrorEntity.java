@@ -18,9 +18,12 @@ public class ErrorEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id", nullable = false)
     private Long id;
+
     private String msg;
+
     @Column(name = "number", nullable = false, unique = true)
     private String number;
-    @OneToOne(mappedBy = "vehicle")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "session_id", referencedColumnName = "id")
     private ChargingSessionEntity session;
 }

@@ -39,8 +39,9 @@ public class CustomerEntity {
     @JsonManagedReference
     private Set<RfidEntity> rfids;
 
-    @OneToOne(mappedBy = "customer")
-    private ChargingSessionEntity session;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private Set<ChargingSessionEntity> sessions;
 
     @Override
     public boolean equals(Object o) {

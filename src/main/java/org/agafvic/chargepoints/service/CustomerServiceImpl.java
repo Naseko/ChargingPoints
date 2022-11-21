@@ -37,8 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
 
         if (customerRepository.existsById(rfid.getCustomer().getId())) {
             ChargingSessionEntity session = sessionUtils.getSession(rfid);
-            ChargingSessionEntity savedEntity = chargingSessionRepository.save(session);
-            return SessionMapper.INSTANCE.mapTo(savedEntity);
+            session = chargingSessionRepository.save(session);
+            return SessionMapper.INSTANCE.mapTo(session);
         } else {
             throw new EntityDoesNotExistException(
                     CustomerEntity.class, "id", rfid.getCustomer().getId().toString());
@@ -56,8 +56,8 @@ public class CustomerServiceImpl implements CustomerService {
         } else {
             session.setStopTime(Instant.now());
             session.setMeter(meterUtils.mockMeterValue());
-            ChargingSessionEntity savedEntity = chargingSessionRepository.save(session);
-            return SessionMapper.INSTANCE.mapTo(savedEntity);
+            session = chargingSessionRepository.save(session);
+            return SessionMapper.INSTANCE.mapTo(session);
         }
     }
 }
