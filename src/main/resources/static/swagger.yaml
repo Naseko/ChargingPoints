@@ -1,0 +1,298 @@
+openapi: 3.0.3
+info:
+  title: Charge Point Service
+  description: Charge Point Service REST API.
+  version: 0.1.0
+paths:
+  /api/v1/admin/sessions:
+    get:
+      summary: Returns a list of sessions.
+      description: Returns a list of finished sessions.
+      tags:
+        - Sessions
+        - Admin
+      responses:
+        '200':
+          description: A JSON array of sessions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChargingPoint'
+
+  /api/v1/admin/connector:
+    post:
+      summary: Adds a new connector
+      description: Adds a new connector to an existing changing point.
+      operationId: createConnector
+      tags:
+        - Connectors
+        - Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConnectorPointBindingDto'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/admin/point:
+    post:
+      summary: Adds a new charging point
+      description: Adds a new charging point
+      operationId: createPoint
+      tags:
+        - Points
+        - Admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChargingPointDto'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/admin/vehicle:
+    post:
+      summary: Creates vehicle
+      description: Creates vehicle (utility method)
+      operationId: createVehicle
+      tags:
+        - Admin
+        - Utility
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VehicleDto'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/admin/customer:
+    post:
+      summary: Creates customer
+      description: Creates customer (utility method)
+      operationId: createCustomer
+      tags:
+        - Admin
+        - Utility
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDto'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/admin/rfid:
+    post:
+      summary: Creates RFID
+      description: Creates RFID tag (utility method)
+      operationId: createRfid
+      tags:
+        - Admin
+        - Utility
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RfidBindingDto'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/customer/session/start:
+    post:
+      summary: Starts a new session
+      description: Starts a new charging session
+      operationId: startSession
+      tags:
+        - Sessions
+        - Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionStarter'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+  /api/v1/customer/session/stop:
+    post:
+      summary: Stops session by its number
+      description: Stops session by its number
+      operationId: stopSession
+      tags:
+        - Sessions
+        - Customer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionStoper'
+      responses:
+        '201':
+          description: Success
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RestApiError'
+
+components:
+  schemas:
+
+    CustomerDto:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: "Judy Doe"
+
+    RfidBindingDto:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: "RFID one for user one"
+        vehicleId:
+          type: integer
+          format: int64
+          nullable: false
+        customerId:
+          type: integer
+          format: int64
+          nullable: false
+
+    VehicleDto:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: "DeLorean DMC-12"
+        regPlate:
+          type: string
+          nullable: false
+          example: "E123AA777"
+
+    SessionStarter:
+      type: object
+      properties:
+        rfidNumber:
+          type: string
+          nullable: false
+          format: uuid
+        chargingPointUSN:
+          type: string
+          nullable: false
+          format: uuid
+
+    SessionStoper:
+      type: object
+      properties:
+        sessionNumber:
+          type: string
+          nullable: false
+          format: uuid
+
+    Connector:
+      type: object
+      properties:
+        number:
+          type: string
+          format: uuid
+          nullable: false
+        chargingPoint:
+          $ref: '#/components/schemas/ChargingPoint'
+
+    ConnectorPointBindingDto:
+      type: object
+      properties:
+        chargingPointUsn:
+          type: string
+          format: uuid
+          nullable: false
+        connectorUsn:
+          type: string
+          format: uuid
+          nullable: false
+
+    ChargingPoint:
+      type: object
+      properties:
+        usn:
+          type: string
+          format: uuid
+          nullable: false
+        name:
+          type: string
+          nullable: true
+
+    ChargingPointDto:
+      type: object
+      properties:
+        usn:
+          type: string
+          format: uuid
+          nullable: false
+        name:
+          type: string
+          nullable: true
+          example: "Charging point 1"
+        customerNumber:
+          type: string
+          nullable: true
+          format: uuid
+
+    RestApiError:
+      type: object
+      properties:
+        value:
+          type: string
+          nullable: true

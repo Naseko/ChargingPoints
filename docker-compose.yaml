@@ -9,7 +9,7 @@ services:
     networks:
       - net
     ports:
-      - 11487:8081
+      - 8081:8081
 
 networks:
   net:
